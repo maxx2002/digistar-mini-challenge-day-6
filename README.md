@@ -1,3 +1,7 @@
+# Finance Web App - Digistar Frontend Final Challenge
+
+<img width="1439" alt="Screenshot 2024-09-05 at 18 29 10" src="https://github.com/user-attachments/assets/1043bc58-30db-4b25-a9e4-4fec45f28401">
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
