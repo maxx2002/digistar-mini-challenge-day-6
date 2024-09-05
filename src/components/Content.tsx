@@ -15,11 +15,11 @@ function Content() {
             </p>
           </div>
         </div>
-        <Button label="Add Expense" variant="add" />
+        <Button label="Add Transaction" variant="add" />
       </div>
       <div className="flex items-center gap-4 mb-8">
         <Button label="Group By" variant="filter" />
-        <Button label="Dates" variant="active" />
+        <Button label="Dates" variant="filter-active" />
         <Button label="Flow Type" variant="filter" />
       </div>
       <div className="flex items-center justify-between mb-6">

@@ -1,8 +1,12 @@
 import { IoIosNotificationsOutline } from "react-icons/io";
 import Button from "./ui/Button";
 import WalletCategoryCard from "./ui/WalletCategoryCard";
+import { useState } from "react";
+import Modal from "./modal/Modal";
 
 function Sidebar() {
+  const [isAddWalletModalOpen, setAddWalletModalOpen] = useState(false);
+
   return (
     <div className="p-6">
       <div className="flex items-center justify-end gap-3 mb-10">
@@ -16,7 +20,7 @@ function Sidebar() {
       <div className="mb-10">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold">Wallets</h1>
-          <Button variant="add" />
+          <Button variant="add" onClick={() => setAddWalletModalOpen(true)} />
         </div>
         <div className="flex flex-col gap-6 mt-6">
           <WalletCategoryCard
@@ -50,6 +54,11 @@ function Sidebar() {
           />
         </div>
       </div>
+
+      <Modal
+        isOpen={isAddWalletModalOpen}
+        onClose={() => setAddWalletModalOpen(false)}
+      />
     </div>
   );
 }
