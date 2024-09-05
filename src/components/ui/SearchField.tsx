@@ -9,7 +9,7 @@ const SearchField: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center max-w-md px-4 py-3 bg-white rounded-lg shadow-sm">
+    <div className="flex items-center w-full max-w-md px-4 py-3 bg-white rounded-lg shadow-sm">
       <FiSearch className="mr-2 text-lg text-darkgray" />
       <input
         type="text"

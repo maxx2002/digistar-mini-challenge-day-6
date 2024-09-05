@@ -1,7 +1,10 @@
 import React from "react";
 import { FiPlus } from "react-icons/fi";
+import { LuChevronsUpDown } from "react-icons/lu";
+import { FaRegEdit } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
 
-type ButtonVariant = "plus" | "primary" | "secondary";
+type ButtonVariant = "add" | "edit" | "delete" | "filter" | "active";
 
 interface ButtonProps {
   onClick?: () => void;
@@ -9,24 +12,25 @@ interface ButtonProps {
   variant?: ButtonVariant;
 }
 
-const Button: React.FC<ButtonProps> = ({
-  onClick,
-  label,
-  variant = "plus",
-}) => {
+const Button: React.FC<ButtonProps> = ({ onClick, label, variant = "add" }) => {
   const variantStyles = {
-    plus: "border-dashed border-darkgray hover:bg-gray-100",
-    primary: "bg-blue-500 text-white hover:bg-blue-600",
-    secondary: "bg-gray-300 text-gray-700 hover:bg-gray-400",
+    add: "border border-dashed border-darkgray hover:scale-105 transition",
+    edit: "bg-lightblue text-blue hover:scale-110 transition",
+    delete: "bg-gray text-darkgray hover:scale-110 transition",
+    filter: "border text-darkgray hover:scale-105 transition",
+    active: "border bg-lightblue text-blue hover:scale-105 transition",
   };
 
   return (
     <button
       onClick={onClick}
-      className={`flex items-center p-2 border-2 rounded-lg transition ${variantStyles[variant]}`}
+      className={`flex items-center gap-2 font-medium text-darkgray p-3 rounded-lg transition ${variantStyles[variant]}`}
     >
-      {variant === "plus" && <FiPlus className="text-darkgray" />}
+      {variant === "add" && <FiPlus />}
+      {variant === "edit" && <FaRegEdit />}
+      {variant === "delete" && <IoClose />}
       {label}
+      {(variant === "filter" || variant === "active") && <LuChevronsUpDown />}
     </button>
   );
 };
