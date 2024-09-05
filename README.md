@@ -1,6 +1,6 @@
-# Finance Web App - Digistar Frontend Final Challenge
+# Personal Finance Web App - Digistar Frontend Final Challenge
 
-<img width="1439" alt="Screenshot 2024-09-05 at 18 29 10" src="https://github.com/user-attachments/assets/1043bc58-30db-4b25-a9e4-4fec45f28401">
+<img width="1440" alt="Screenshot 2024-09-05 at 18 37 12" src="https://github.com/user-attachments/assets/4580051a-814e-4280-a063-6ea52bb4e40a">
 
 # Getting Started with Create React App
 
