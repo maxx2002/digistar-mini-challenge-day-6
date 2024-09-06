@@ -1,7 +1,8 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { FaWallet } from "react-icons/fa";
 import { BiSolidCategory } from "react-icons/bi";
 import Button from "./Button";
+import Modal from "../modal/Modal";
 
 type CardVariant = "wallet" | "category";
 
@@ -25,6 +26,9 @@ const WalletCategoryCard: React.FC<WalletCategoryCardProps> = ({
   amount,
   variant,
 }) => {
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+
   const randomBgColor = useMemo(() => {
     const randomIndex = Math.floor(Math.random() * bgColors.length);
     return bgColors[randomIndex];
@@ -47,9 +51,20 @@ const WalletCategoryCard: React.FC<WalletCategoryCardProps> = ({
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <Button variant="edit" />
-        <Button variant="delete" />
+        <Button variant="edit" onClick={() => setEditModalOpen(true)} />
+        <Button variant="delete" onClick={() => setDeleteModalOpen(true)} />
       </div>
+
+      <Modal
+        type={variant === "category" ? "category-form" : "wallet-form"}
+        isOpen={isEditModalOpen}
+        onClose={() => setEditModalOpen(false)}
+      />
+      <Modal
+        type={variant === "category" ? "delete-category" : "delete-wallet"}
+        isOpen={isDeleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+      />
     </div>
   );
 };

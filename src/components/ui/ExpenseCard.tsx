@@ -1,5 +1,7 @@
 import { MdOutlinePayments } from "react-icons/md";
 import Button from "./Button";
+import Modal from "../modal/Modal";
+import { useState } from "react";
 
 type ExpenseCardProps = {
   category: string;
@@ -27,6 +29,9 @@ const ExpenseCard: React.FC<ExpenseCardProps> = ({
 }) => {
   const bgColor = getRandomBgColor();
 
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+
   return (
     <div className="flex items-center p-6 bg-white rounded-lg shadow-md">
       <div
@@ -41,10 +46,21 @@ const ExpenseCard: React.FC<ExpenseCardProps> = ({
         </div>
         <div className="flex items-center gap-2">
           <p className="mr-8 font-bold text-black">${amount}</p>
-          <Button variant="edit" />
-          <Button variant="delete" />
+          <Button variant="edit" onClick={() => setEditModalOpen(true)} />
+          <Button variant="delete" onClick={() => setDeleteModalOpen(true)} />
         </div>
       </div>
+
+      <Modal
+        type="expense-form"
+        isOpen={isEditModalOpen}
+        onClose={() => setEditModalOpen(false)}
+      />
+      <Modal
+        type="delete-expense"
+        isOpen={isDeleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+      />
     </div>
   );
 };

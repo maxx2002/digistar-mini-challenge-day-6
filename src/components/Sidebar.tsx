@@ -6,6 +6,7 @@ import Modal from "./modal/Modal";
 
 function Sidebar() {
   const [isAddWalletModalOpen, setAddWalletModalOpen] = useState(false);
+  const [isAddCategoryModalOpen, setAddCategoryModalOpen] = useState(false);
 
   return (
     <div className="p-6">
@@ -39,7 +40,7 @@ function Sidebar() {
       <div className="mt-10">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold">Categories</h1>
-          <Button variant="add" />
+          <Button variant="add" onClick={() => setAddCategoryModalOpen(true)} />
         </div>
         <div className="flex flex-col gap-6 mt-6">
           <WalletCategoryCard
@@ -56,8 +57,14 @@ function Sidebar() {
       </div>
 
       <Modal
+        type="wallet-form"
         isOpen={isAddWalletModalOpen}
         onClose={() => setAddWalletModalOpen(false)}
+      />
+      <Modal
+        type="category-form"
+        isOpen={isAddCategoryModalOpen}
+        onClose={() => setAddCategoryModalOpen(false)}
       />
     </div>
   );

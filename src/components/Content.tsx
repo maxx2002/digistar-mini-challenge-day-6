@@ -1,8 +1,13 @@
 import { FaWallet } from "react-icons/fa";
 import Button from "./ui/Button";
 import ExpenseCard from "./ui/ExpenseCard";
+import { useState } from "react";
+import Modal from "./modal/Modal";
 
 function Content() {
+  const [isAddModalOpen, setAddModalOpen] = useState(false);
+  const [isChangeWalletModalOpen, setChangeWalletModalOpen] = useState(false);
+
   return (
     <div className="px-10 py-4">
       <div className="flex items-center justify-between mb-8">
@@ -10,12 +15,19 @@ function Content() {
           <FaWallet className="text-orange" size={44} />
           <div className="flex flex-col">
             <h2 className="text-2xl font-semibold text-blue">Home Wallet</h2>
-            <p className="text-sm font-medium text-darkgray">
+            <p
+              className="text-sm font-medium cursor-pointer text-darkgray"
+              onClick={() => setChangeWalletModalOpen(true)}
+            >
               Change default wallet
             </p>
           </div>
         </div>
-        <Button label="Add Transaction" variant="add" />
+        <Button
+          label="Add Transaction"
+          variant="add"
+          onClick={() => setAddModalOpen(true)}
+        />
       </div>
       <div className="flex items-center gap-4 mb-8">
         <Button label="Group By" variant="filter" />
@@ -47,6 +59,17 @@ function Content() {
           amount={250.45}
         />
       </div>
+
+      <Modal
+        type="expense-form"
+        isOpen={isAddModalOpen}
+        onClose={() => setAddModalOpen(false)}
+      />
+      <Modal
+        type="change-wallet-form"
+        isOpen={isChangeWalletModalOpen}
+        onClose={() => setChangeWalletModalOpen(false)}
+      />
     </div>
   );
 }
