@@ -19,10 +19,25 @@ const useGetAllExpenses = () => {
   const fetchExpenses = useCallback(async () => {
     setExpensesLoading(true);
     try {
-      const response = await axios.get<UseGetAllExpenseResponse>(
-        "https://digistar-demo-be.vercel.app/api/expense-items"
-      );
-      setExpenses(response.data.data);
+      let currentPage = 1;
+      const limit = 10;
+      const allExpenses: Expense[] = [];
+
+      while (true) {
+        const response = await axios.get<UseGetAllExpenseResponse>(
+          `https://digistar-demo-be.vercel.app/api/expense-items?page=${currentPage}&limit=${limit}`
+        );
+
+        allExpenses.push(...response.data.data);
+
+        if (response.data.page >= response.data.totalPages) {
+          break;
+        }
+
+        currentPage++;
+      }
+
+      setExpenses(allExpenses);
       setExpensesError(null);
     } catch (error) {
       setExpensesError(
