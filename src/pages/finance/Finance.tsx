@@ -1,16 +1,16 @@
 import { FaWallet } from "react-icons/fa";
-import Button from "./ui/Button";
-import ExpenseCard from "./ui/ExpenseCard";
 import { useEffect, useState } from "react";
-import Modal from "./modal/Modal";
-import SpinnerLoading from "./ui/SpinnerLoading";
-import { formatDate } from "../utils/formatDate";
-import { Expense } from "../interfaces/Expense";
-import { Wallet } from "../interfaces/Wallet";
-import { useDataContext } from "../contexts/DataContext";
-import SearchField from "./ui/SearchField";
+import { useDataContext } from "../../contexts/DataContext";
+import { Expense } from "../../interfaces/Expense";
+import { Wallet } from "../../interfaces/Wallet";
+import Button from "../../components/ui/Button";
+import SearchField from "../../components/ui/SearchField";
+import { formatDate } from "../../utils/formatDate";
+import SpinnerLoading from "../../components/ui/SpinnerLoading";
+import ExpenseCard from "../../components/ui/ExpenseCard";
+import Modal from "../../components/modal/Modal";
 
-const Content = () => {
+const Finance = () => {
   const { expenses, expensesLoading, expensesError, wallets } =
     useDataContext();
 
@@ -119,4 +119,4 @@ const Content = () => {
   );
 };
 
-export default Content;
+export default Finance;
