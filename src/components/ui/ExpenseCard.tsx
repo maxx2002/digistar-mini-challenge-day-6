@@ -9,6 +9,7 @@ type ExpenseCardProps = {
   category: string;
   date: string;
   amount: number;
+  type: "income" | "outcome";
 };
 
 const getRandomBgColor = () => {
@@ -29,6 +30,7 @@ const ExpenseCard: React.FC<ExpenseCardProps> = ({
   category,
   date,
   amount,
+  type,
 }) => {
   const bgColor = getRandomBgColor();
 
@@ -50,7 +52,9 @@ const ExpenseCard: React.FC<ExpenseCardProps> = ({
           <p className="text-darkgray">{formatDate(date)}</p>
         </div>
         <div className="flex items-center gap-2">
-          <p className="mr-8 font-bold text-black">${amount}</p>
+          <p className="mr-8 font-bold text-black">
+            {type === "outcome" && "-"}${amount}
+          </p>
           <Button variant="edit" onClick={() => setEditModalOpen(true)} />
           <Button variant="delete" onClick={() => setDeleteModalOpen(true)} />
         </div>

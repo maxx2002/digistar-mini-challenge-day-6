@@ -34,6 +34,20 @@ const WalletCategoryCard: React.FC<WalletCategoryCardProps> = ({
 
   const Icon = wallet ? FaWallet : BiSolidCategory;
 
+  const amount = useMemo(() => {
+    if (wallet) {
+      return wallet?.expenseItems?.reduce((acc, item) => acc + item.amount, 0);
+    } else if (category) {
+      return (
+        category?.wallet?.expenseItems?.reduce(
+          (acc, item) => acc + item.amount,
+          0
+        ) || 0
+      );
+    }
+    return 0;
+  }, [wallet, category]);
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center space-x-4">
@@ -47,7 +61,7 @@ const WalletCategoryCard: React.FC<WalletCategoryCardProps> = ({
           <h3 className="font-semibold">
             {wallet ? wallet?.name : category?.name}
           </h3>
-          <p className="text-sm text-darkgray">${0}</p>
+          <p className="text-sm text-darkgray">${amount}</p>
         </div>
       </div>
       <div className="flex items-center gap-2">

@@ -28,6 +28,7 @@ const Finance = () => {
         setCurrentWallet(wallets[0]);
         setIsInitialLoad(false);
       }
+
       if (currentWallet) {
         const filteredExpenses = expenses.filter(
           (expense) => expense.wallet?._id === currentWallet?._id
@@ -35,10 +36,16 @@ const Finance = () => {
         setExpenseList(filteredExpenses);
 
         setTransactions(filteredExpenses.length);
-        const totalAmount = filteredExpenses.reduce(
-          (acc, expense) => acc + expense.amount,
-          0
-        );
+
+        const totalAmount = filteredExpenses.reduce((acc, expense) => {
+          if (expense.flowType === "income") {
+            return acc + expense.amount;
+          } else if (expense.flowType === "outcome") {
+            return acc - expense.amount;
+          }
+          return acc;
+        }, 0);
+
         setValue(totalAmount);
       }
     }
@@ -82,7 +89,7 @@ const Finance = () => {
         <h6 className="text-lg font-semibold">{formatDate(Date())}</h6>
         <div className="flex items-center gap-10 text-darkgray">
           <p>Number of transactions: {transactions}</p>
-          <p>Value: ${value}</p>
+          <p>Value: {value < 0 ? `-$${Math.abs(value)}` : `$${value}`}</p>
         </div>
       </div>
       <div className="flex flex-col gap-4 mb-6">
@@ -98,6 +105,7 @@ const Finance = () => {
                 category={expense.category?.name || "no category"}
                 date={expense.createdAt}
                 amount={expense.amount}
+                type={expense.flowType}
               />
             ))
           : !expensesLoading && !expensesError && <p>No expenses found</p>}
