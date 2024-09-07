@@ -49,7 +49,7 @@ const Modal: React.FC<ModalProps> = ({
         >
           &times;
         </button>
-        {type === "category-form" && <CategoryForm />}
+        {type === "category-form" && <CategoryForm category={category} />}
         {type === "wallet-form" && <WalletForm wallet={wallet} />}
         {type === "expense-form" && <ExpenseForm />}
         {type === "change-wallet-form" && (

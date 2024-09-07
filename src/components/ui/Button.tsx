@@ -19,6 +19,7 @@ interface ButtonProps {
   label?: string;
   variant?: ButtonVariant;
   type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -26,6 +27,7 @@ const Button: React.FC<ButtonProps> = ({
   label,
   variant = "default",
   type = "button",
+  disabled = false,
 }) => {
   const variantStyles = {
     default:
@@ -46,6 +48,7 @@ const Button: React.FC<ButtonProps> = ({
       type={type}
       onClick={onClick}
       className={`flex items-center gap-2 font-medium p-3 rounded-lg transition ${variantStyles[variant]}`}
+      disabled={disabled}
     >
       {variant === "add" && <FiPlus className="text-darkgray" />}
       {variant === "edit" && <FaRegEdit className="text-blue" />}

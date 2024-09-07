@@ -25,6 +25,7 @@ const Select: React.FC<SelectProps> = ({
         value={value}
         onChange={onChange}
         className="w-full p-3 border rounded-md appearance-none border-darkgray"
+        required
       >
         <option value="" disabled>
           Select an option

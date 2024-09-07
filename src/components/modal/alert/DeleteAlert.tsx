@@ -7,6 +7,7 @@ import { Category } from "../../../interfaces/Category";
 import { Expense } from "../../../interfaces/Expense";
 import ActionSuccessAlert from "./ActionSuccessAlert";
 import { useDataContext } from "../../../contexts/DataContext";
+import useDeleteCategory from "../../../hooks/category/useDeleteCategory";
 
 type DeleteAlertProps = {
   wallet?: Wallet;
@@ -27,6 +28,9 @@ const DeleteAlert: React.FC<DeleteAlertProps> = ({
   const { deleteWallet, deleteWalletLoading, deleteWalletError } =
     useDeleteWallet();
 
+  const { deleteCategory, deleteCategoryLoading, deleteCategoryError } =
+    useDeleteCategory();
+
   const [isDeleteCompleted, setDeleteCompleted] = useState(false);
 
   const handleDelete = async () => {
@@ -37,6 +41,16 @@ const DeleteAlert: React.FC<DeleteAlertProps> = ({
         return;
       } else {
         refetchWallets();
+        setDeleteCompleted(true);
+        return;
+      }
+    } else if (category) {
+      await deleteCategory(category._id);
+
+      if (deleteCategoryError) {
+        return;
+      } else {
+        refetchCategories();
         setDeleteCompleted(true);
         return;
       }
@@ -71,7 +85,11 @@ const DeleteAlert: React.FC<DeleteAlertProps> = ({
           <div className="flex items-center justify-between gap-4 mt-8">
             <Button label="Cancel" variant="cancel" onClick={onCancel} />
             <Button
-              label={deleteWalletLoading ? "Deleting..." : "Delete"}
+              label={
+                deleteWalletLoading || deleteCategoryLoading
+                  ? "Deleting..."
+                  : "Delete"
+              }
               variant="destroy"
               onClick={handleDelete}
             />

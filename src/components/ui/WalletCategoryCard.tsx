@@ -36,13 +36,17 @@ const WalletCategoryCard: React.FC<WalletCategoryCardProps> = ({
 
   const amount = useMemo(() => {
     if (wallet) {
-      return wallet?.expenseItems?.reduce((acc, item) => acc + item.amount, 0);
+      return wallet?.expenseItems?.reduce((acc, item) => {
+        const amount = item.flowType === "outcome" ? -item.amount : item.amount;
+        return acc + amount;
+      }, 0);
     } else if (category) {
       return (
-        category?.wallet?.expenseItems?.reduce(
-          (acc, item) => acc + item.amount,
-          0
-        ) || 0
+        category?.wallet?.expenseItems?.reduce((acc, item) => {
+          const amount =
+            item.flowType === "outcome" ? -item.amount : item.amount;
+          return acc + amount;
+        }, 0) || 0
       );
     }
     return 0;
@@ -61,7 +65,9 @@ const WalletCategoryCard: React.FC<WalletCategoryCardProps> = ({
           <h3 className="font-semibold">
             {wallet ? wallet?.name : category?.name}
           </h3>
-          <p className="text-sm text-darkgray">${amount}</p>
+          <p className="text-sm text-darkgray">
+            {amount < 0 ? `-$${Math.abs(amount)}` : `$${amount}`}
+          </p>
         </div>
       </div>
       <div className="flex items-center gap-2">

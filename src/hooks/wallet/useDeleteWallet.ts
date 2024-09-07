@@ -11,14 +11,13 @@ const useDeleteWallet = () => {
   const deleteWallet = async (id: string) => {
     setDeleteWalletLoading(true);
     try {
-      await axios.delete<{ message: string }>(
+      const response = await axios.delete<{ message: string }>(
         `https://digistar-demo-be.vercel.app/api/wallets/${id}`
       );
-      return { success: true };
+      return response.data.message;
     } catch (err) {
       setDeleteWalletError("Failed to delete wallet. Please try again.");
       console.error(err);
-      return { success: false };
     } finally {
       setDeleteWalletLoading(false);
     }
