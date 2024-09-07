@@ -8,6 +8,7 @@ import { formatDate } from "../utils/formatDate";
 import { Expense } from "../interfaces/Expense";
 import { Wallet } from "../interfaces/Wallet";
 import { useDataContext } from "../contexts/DataContext";
+import SearchField from "./ui/SearchField";
 
 const Content = () => {
   const { expenses, expensesLoading, expensesError, wallets } =
@@ -19,13 +20,15 @@ const Content = () => {
   const [value, setValue] = useState(0);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
   useEffect(() => {
     if (expenses && wallets.length > 0) {
-      if (isInitialLoad && wallets.length > 0) {
+      if (isInitialLoad) {
         setCurrentWallet(wallets[0]);
         setIsInitialLoad(false);
       }
-      if (expenses && currentWallet) {
+      if (currentWallet) {
         const filteredExpenses = expenses.filter(
           (expense) => expense.wallet?._id === currentWallet?._id
         );
@@ -67,10 +70,13 @@ const Content = () => {
           onClick={() => setAddModalOpen(true)}
         />
       </div>
-      <div className="flex items-center gap-4 mb-8">
-        <Button label="Group By" variant="filter" />
-        <Button label="Dates" variant="filter-active" />
-        <Button label="Flow Type" variant="filter" />
+      <div className="flex items-center justify-between w-full mb-8 gap-x-4">
+        <SearchField searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        <div className="flex items-center justify-end gap-x-4 min-w-96">
+          <Button label="Category" variant="filter" />
+          <Button label="Date" variant="filter-active" />
+          <Button label="Flow Type" variant="filter" />
+        </div>
       </div>
       <div className="flex items-center justify-between mb-6">
         <h6 className="text-lg font-semibold">{formatDate(Date())}</h6>
