@@ -21,7 +21,7 @@ const SearchField: React.FC<SearchFieldProps> = ({
         value={searchTerm}
         onChange={handleSearchChange}
         placeholder="Search Expenses..."
-        className="bg-white placeholder-darkgray focus:outline-none"
+        className="w-full bg-white placeholder-darkgray focus:outline-none"
       />
     </div>
   );
