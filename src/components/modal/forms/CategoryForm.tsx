@@ -77,11 +77,6 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
           <h1 className="mb-6 text-2xl font-bold">
             {category ? "Update Category" : "Create Category"}
           </h1>
-          {(createCategoryError || updateCategoryError) && (
-            <p className="text-red-500">
-              {createCategoryError || updateCategoryError}
-            </p>
-          )}
           <form onSubmit={handleSubmit} className="flex flex-col gap-8">
             <Input
               id="name"
@@ -98,6 +93,12 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
               onChange={handleWalletChange}
               options={walletOptions}
             />
+
+            {(createCategoryError || updateCategoryError) && (
+              <p className="py-2 text-darkred">
+                {createCategoryError || updateCategoryError}
+              </p>
+            )}
 
             <Button
               type="submit"

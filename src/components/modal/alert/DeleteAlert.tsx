@@ -8,6 +8,7 @@ import { Expense } from "../../../interfaces/Expense";
 import ActionSuccessAlert from "./ActionSuccessAlert";
 import { useDataContext } from "../../../contexts/DataContext";
 import useDeleteCategory from "../../../hooks/category/useDeleteCategory";
+import useDeleteExpense from "../../../hooks/expense/useDeleteExpense";
 
 type DeleteAlertProps = {
   wallet?: Wallet;
@@ -27,9 +28,10 @@ const DeleteAlert: React.FC<DeleteAlertProps> = ({
 
   const { deleteWallet, deleteWalletLoading, deleteWalletError } =
     useDeleteWallet();
-
   const { deleteCategory, deleteCategoryLoading, deleteCategoryError } =
     useDeleteCategory();
+  const { deleteExpense, deleteExpenseLoading, deleteExpenseError } =
+    useDeleteExpense();
 
   const [isDeleteCompleted, setDeleteCompleted] = useState(false);
 
@@ -51,6 +53,16 @@ const DeleteAlert: React.FC<DeleteAlertProps> = ({
         return;
       } else {
         refetchCategories();
+        setDeleteCompleted(true);
+        return;
+      }
+    } else if (expense) {
+      await deleteExpense(expense._id);
+
+      if (deleteExpenseError) {
+        return;
+      } else {
+        refetchExpenses();
         setDeleteCompleted(true);
         return;
       }
@@ -83,20 +95,33 @@ const DeleteAlert: React.FC<DeleteAlertProps> = ({
             {type}.
           </p>
           <div className="flex items-center justify-between gap-4 mt-8">
-            <Button label="Cancel" variant="cancel" onClick={onCancel} />
+            <Button
+              label="Cancel"
+              variant="cancel"
+              onClick={onCancel}
+              disabled={
+                deleteWalletLoading ||
+                deleteCategoryLoading ||
+                deleteExpenseLoading
+              }
+            />
             <Button
               label={
-                deleteWalletLoading || deleteCategoryLoading
+                deleteWalletLoading ||
+                deleteCategoryLoading ||
+                deleteExpenseLoading
                   ? "Deleting..."
                   : "Delete"
               }
               variant="destroy"
               onClick={handleDelete}
+              disabled={
+                deleteWalletLoading ||
+                deleteCategoryLoading ||
+                deleteExpenseLoading
+              }
             />
           </div>
-          {deleteWalletError && (
-            <p className="text-center text-darkred">{deleteWalletError}</p>
-          )}
         </>
       )}
     </div>

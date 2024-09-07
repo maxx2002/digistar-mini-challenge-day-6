@@ -75,7 +75,7 @@ const WalletForm: React.FC<WalletFormProps> = ({ wallet }: WalletFormProps) => {
               onChange={handleInputChange}
             />
             {(createWalletError || updateWalletError) && (
-              <p className="text-darkred">
+              <p className="py-2 text-darkred">
                 {createWalletError || updateWalletError}
               </p>
             )}
@@ -90,6 +90,7 @@ const WalletForm: React.FC<WalletFormProps> = ({ wallet }: WalletFormProps) => {
                   ? "Update Wallet"
                   : "Add Wallet"
               }
+              disabled={createWalletLoading || updateWalletLoading}
             />
           </form>
         </>

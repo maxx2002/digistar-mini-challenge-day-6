@@ -99,14 +99,7 @@ const Finance = () => {
         )}
         {expenseList.length > 0
           ? expenseList.map((expense) => (
-              <ExpenseCard
-                key={expense._id}
-                title={expense.title}
-                category={expense.category?.name || "no category"}
-                date={expense.createdAt}
-                amount={expense.amount}
-                type={expense.flowType}
-              />
+              <ExpenseCard key={expense._id} expense={expense} />
             ))
           : !expensesLoading && !expensesError && <p>No expenses found</p>}
       </div>

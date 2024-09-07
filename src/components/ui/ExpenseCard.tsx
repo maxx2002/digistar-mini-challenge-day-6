@@ -3,13 +3,10 @@ import Button from "./Button";
 import Modal from "../modal/Modal";
 import { useState } from "react";
 import { formatDate } from "../../utils/formatDate";
+import { Expense } from "../../interfaces/Expense";
 
 type ExpenseCardProps = {
-  title: string;
-  category: string;
-  date: string;
-  amount: number;
-  type: "income" | "outcome";
+  expense: Expense;
 };
 
 const getRandomBgColor = () => {
@@ -26,12 +23,8 @@ const getRandomBgColor = () => {
 };
 
 const ExpenseCard: React.FC<ExpenseCardProps> = ({
-  title,
-  category,
-  date,
-  amount,
-  type,
-}) => {
+  expense,
+}: ExpenseCardProps) => {
   const bgColor = getRandomBgColor();
 
   const [isEditModalOpen, setEditModalOpen] = useState(false);
@@ -47,13 +40,13 @@ const ExpenseCard: React.FC<ExpenseCardProps> = ({
       <div className="flex items-center justify-between w-full ml-4">
         <div>
           <p className="text-lg font-medium text-black">
-            {title} - {category}
+            {expense.title} - {expense.category?.name}
           </p>
-          <p className="text-darkgray">{formatDate(date)}</p>
+          <p className="text-darkgray">{formatDate(expense.createdAt)}</p>
         </div>
         <div className="flex items-center gap-2">
           <p className="mr-8 font-bold text-black">
-            {type === "outcome" && "-"}${amount}
+            {expense.flowType === "outcome" && "-"}${expense.amount}
           </p>
           <Button variant="edit" onClick={() => setEditModalOpen(true)} />
           <Button variant="delete" onClick={() => setDeleteModalOpen(true)} />
@@ -63,11 +56,13 @@ const ExpenseCard: React.FC<ExpenseCardProps> = ({
       <Modal
         type="expense-form"
         isOpen={isEditModalOpen}
+        expense={expense}
         onClose={() => setEditModalOpen(false)}
       />
       <Modal
         type="delete-expense"
         isOpen={isDeleteModalOpen}
+        expense={expense}
         onClose={() => setDeleteModalOpen(false)}
       />
     </div>
