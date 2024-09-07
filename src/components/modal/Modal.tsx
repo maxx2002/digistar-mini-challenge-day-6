@@ -1,6 +1,7 @@
-import DeleteCategoryAlert from "./alert/DeleteCategoryAlert";
-import DeleteExpenseAlert from "./alert/DeleteExpenseAlert";
-import DeleteWalletAlert from "./alert/DeleteWalletAlert";
+import { Category } from "../../interfaces/Category";
+import { Expense } from "../../interfaces/Expense";
+import { Wallet } from "../../interfaces/Wallet";
+import DeleteAlert from "./alert/DeleteAlert";
 import CategoryForm from "./forms/CategoryForm";
 import ChangeWalletForm from "./forms/ChangeWalletForm";
 import ExpenseForm from "./forms/ExpenseForm";
@@ -17,12 +18,21 @@ type ModalProps = {
     | "delete-category"
     | "delete-wallet"
     | "delete-expense";
-  category?: any;
-  wallet?: any;
-  expense?: any;
+  category?: Category;
+  wallet?: Wallet;
+  setCurrentWallet?: (wallet: Wallet) => void;
+  expense?: Expense;
 };
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, type }) => {
+const Modal: React.FC<ModalProps> = ({
+  category,
+  wallet,
+  setCurrentWallet,
+  expense,
+  isOpen,
+  onClose,
+  type,
+}) => {
   if (!isOpen) return null;
 
   return (
@@ -40,14 +50,24 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, type }) => {
           &times;
         </button>
         {type === "category-form" && <CategoryForm />}
-        {type === "wallet-form" && <WalletForm />}
+        {type === "wallet-form" && <WalletForm wallet={wallet} />}
         {type === "expense-form" && <ExpenseForm />}
-        {type === "change-wallet-form" && <ChangeWalletForm />}
-        {type === "delete-category" && (
-          <DeleteCategoryAlert onCancel={onClose} />
+        {type === "change-wallet-form" && (
+          <ChangeWalletForm
+            currentWallet={wallet}
+            setCurrentWallet={setCurrentWallet}
+            onClose={onClose}
+          />
         )}
-        {type === "delete-wallet" && <DeleteWalletAlert onCancel={onClose} />}
-        {type === "delete-expense" && <DeleteExpenseAlert onCancel={onClose} />}
+        {type === "delete-category" && (
+          <DeleteAlert category={category} onCancel={onClose} />
+        )}
+        {type === "delete-wallet" && (
+          <DeleteAlert wallet={wallet} onCancel={onClose} />
+        )}
+        {type === "delete-expense" && (
+          <DeleteAlert expense={expense} onCancel={onClose} />
+        )}
       </div>
     </div>
   );

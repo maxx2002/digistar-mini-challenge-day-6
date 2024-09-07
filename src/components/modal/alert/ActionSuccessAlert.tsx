@@ -18,14 +18,14 @@ const ActionSuccessAlert: React.FC<ActionSuccessAlertProps> = ({
   };
 
   const typeMessages = {
-    category: "Category",
-    wallet: "Wallet",
-    expense: "Expense",
+    category: "category",
+    wallet: "wallet",
+    expense: "expense",
   };
 
   const icon = <MdCheckCircle className="size-32 text-green" />;
 
-  const message = `${typeMessages[type]} was ${actionMessages[action]} successfully.`;
+  const message = `The ${typeMessages[type]} was ${actionMessages[action]} successfully.`;
 
   return (
     <div className="flex flex-col items-center justify-center">

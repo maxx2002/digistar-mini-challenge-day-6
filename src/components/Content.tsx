@@ -1,10 +1,46 @@
 import { FaWallet } from "react-icons/fa";
 import Button from "./ui/Button";
 import ExpenseCard from "./ui/ExpenseCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "./modal/Modal";
+import SpinnerLoading from "./ui/SpinnerLoading";
+import { formatDate } from "../utils/formatDate";
+import { Expense } from "../interfaces/Expense";
+import { Wallet } from "../interfaces/Wallet";
+import { useDataContext } from "../contexts/DataContext";
 
-function Content() {
+const Content = () => {
+  const { expenses, expensesLoading, expensesError, wallets } =
+    useDataContext();
+
+  const [expenseList, setExpenseList] = useState<Expense[]>([]);
+  const [currentWallet, setCurrentWallet] = useState<Wallet | null>(null);
+  const [transactions, setTransactions] = useState(0);
+  const [value, setValue] = useState(0);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+  useEffect(() => {
+    if (expenses && wallets.length > 0) {
+      if (isInitialLoad && wallets.length > 0) {
+        setCurrentWallet(wallets[0]);
+        setIsInitialLoad(false);
+      }
+      if (expenses && currentWallet) {
+        const filteredExpenses = expenses.filter(
+          (expense) => expense.wallet?._id === currentWallet?._id
+        );
+        setExpenseList(filteredExpenses);
+
+        setTransactions(filteredExpenses.length);
+        const totalAmount = filteredExpenses.reduce(
+          (acc, expense) => acc + expense.amount,
+          0
+        );
+        setValue(totalAmount);
+      }
+    }
+  }, [expenses, wallets, currentWallet, isInitialLoad]);
+
   const [isAddModalOpen, setAddModalOpen] = useState(false);
   const [isChangeWalletModalOpen, setChangeWalletModalOpen] = useState(false);
 
@@ -14,12 +50,14 @@ function Content() {
         <div className="flex items-center gap-4">
           <FaWallet className="text-orange" size={44} />
           <div className="flex flex-col">
-            <h2 className="text-2xl font-semibold text-blue">Home Wallet</h2>
+            <h2 className="text-2xl font-semibold text-blue">
+              {currentWallet?.name} Wallet
+            </h2>
             <p
               className="text-sm font-medium cursor-pointer text-darkgray"
               onClick={() => setChangeWalletModalOpen(true)}
             >
-              Change default wallet
+              Change current wallet
             </p>
           </div>
         </div>
@@ -35,29 +73,28 @@ function Content() {
         <Button label="Flow Type" variant="filter" />
       </div>
       <div className="flex items-center justify-between mb-6">
-        <h6 className="text-lg font-semibold">January 15th, 2024</h6>
+        <h6 className="text-lg font-semibold">{formatDate(Date())}</h6>
         <div className="flex items-center gap-10 text-darkgray">
-          <p>Number of transactions: 04</p>
-          <p>Value: $7408.9</p>
+          <p>Number of transactions: {transactions}</p>
+          <p>Value: ${value}</p>
         </div>
       </div>
-      <div className="flex flex-col gap-4">
-        <ExpenseCard category="Food" date="July 15th, 2024" amount={20.15} />
-        <ExpenseCard
-          category="Shopping"
-          date="July 17th, 2024"
-          amount={50.59}
-        />
-        <ExpenseCard
-          category="Credits and Loans"
-          date="July 18th, 2024"
-          amount={220.5}
-        />
-        <ExpenseCard
-          category="Freelance from Upwork"
-          date="July 19th, 2024"
-          amount={250.45}
-        />
+      <div className="flex flex-col gap-4 mb-6">
+        {expensesLoading && <SpinnerLoading />}
+        {expensesError && (
+          <p className="text-darkred">Expense: {expensesError}</p>
+        )}
+        {expenseList.length > 0
+          ? expenseList.map((expense) => (
+              <ExpenseCard
+                key={expense._id}
+                title={expense.title}
+                category={expense.category?.name || "no category"}
+                date={expense.createdAt}
+                amount={expense.amount}
+              />
+            ))
+          : !expensesLoading && !expensesError && <p>No expenses found</p>}
       </div>
 
       <Modal
@@ -67,11 +104,13 @@ function Content() {
       />
       <Modal
         type="change-wallet-form"
+        wallet={currentWallet ?? undefined}
+        setCurrentWallet={setCurrentWallet}
         isOpen={isChangeWalletModalOpen}
         onClose={() => setChangeWalletModalOpen(false)}
       />
     </div>
   );
-}
+};
 
 export default Content;

@@ -3,13 +3,12 @@ import { FaWallet } from "react-icons/fa";
 import { BiSolidCategory } from "react-icons/bi";
 import Button from "./Button";
 import Modal from "../modal/Modal";
-
-type CardVariant = "wallet" | "category";
+import { Wallet } from "../../interfaces/Wallet";
+import { Category } from "../../interfaces/Category";
 
 interface WalletCategoryCardProps {
-  title: string;
-  amount: number;
-  variant: CardVariant;
+  wallet?: Wallet;
+  category?: Category;
 }
 
 const bgColors = [
@@ -22,9 +21,8 @@ const bgColors = [
 ];
 
 const WalletCategoryCard: React.FC<WalletCategoryCardProps> = ({
-  title,
-  amount,
-  variant,
+  wallet,
+  category,
 }) => {
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -34,7 +32,7 @@ const WalletCategoryCard: React.FC<WalletCategoryCardProps> = ({
     return bgColors[randomIndex];
   }, []);
 
-  const Icon = variant === "wallet" ? FaWallet : BiSolidCategory;
+  const Icon = wallet ? FaWallet : BiSolidCategory;
 
   return (
     <div className="flex items-center justify-between">
@@ -46,8 +44,10 @@ const WalletCategoryCard: React.FC<WalletCategoryCardProps> = ({
         </div>
 
         <div>
-          <h3 className="font-semibold">{title}</h3>
-          <p className="text-sm text-darkgray">${amount.toFixed(2)}</p>
+          <h3 className="font-semibold">
+            {wallet ? wallet?.name : category?.name}
+          </h3>
+          <p className="text-sm text-darkgray">${0}</p>
         </div>
       </div>
       <div className="flex items-center gap-2">
@@ -56,12 +56,16 @@ const WalletCategoryCard: React.FC<WalletCategoryCardProps> = ({
       </div>
 
       <Modal
-        type={variant === "category" ? "category-form" : "wallet-form"}
+        type={wallet ? "wallet-form" : "category-form"}
+        wallet={wallet}
+        category={category}
         isOpen={isEditModalOpen}
         onClose={() => setEditModalOpen(false)}
       />
       <Modal
-        type={variant === "category" ? "delete-category" : "delete-wallet"}
+        type={wallet ? "delete-wallet" : "delete-category"}
+        wallet={wallet}
+        category={category}
         isOpen={isDeleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
       />

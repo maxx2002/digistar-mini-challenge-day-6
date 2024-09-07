@@ -27,6 +27,7 @@ const Input: React.FC<InputProps> = ({
         onChange={onChange}
         placeholder={placeholder}
         className="w-full p-3 border rounded-md border-darkgray focus:outline-none focus:ring-2 focus:ring-blue-500"
+        required
       />
     </div>
   );

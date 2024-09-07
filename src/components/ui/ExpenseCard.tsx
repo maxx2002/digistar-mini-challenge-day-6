@@ -2,8 +2,10 @@ import { MdOutlinePayments } from "react-icons/md";
 import Button from "./Button";
 import Modal from "../modal/Modal";
 import { useState } from "react";
+import { formatDate } from "../../utils/formatDate";
 
 type ExpenseCardProps = {
+  title: string;
   category: string;
   date: string;
   amount: number;
@@ -23,6 +25,7 @@ const getRandomBgColor = () => {
 };
 
 const ExpenseCard: React.FC<ExpenseCardProps> = ({
+  title,
   category,
   date,
   amount,
@@ -41,8 +44,10 @@ const ExpenseCard: React.FC<ExpenseCardProps> = ({
       </div>
       <div className="flex items-center justify-between w-full ml-4">
         <div>
-          <p className="text-lg font-medium text-black">{category}</p>
-          <p className="text-darkgray">{date}</p>
+          <p className="text-lg font-medium text-black">
+            {title} - {category}
+          </p>
+          <p className="text-darkgray">{formatDate(date)}</p>
         </div>
         <div className="flex items-center gap-2">
           <p className="mr-8 font-bold text-black">${amount}</p>
