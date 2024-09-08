@@ -19,13 +19,28 @@ const useGetAllWallets = () => {
   const fetchWallets = useCallback(async () => {
     setWalletsLoading(true);
     try {
-      const response = await axios.get<GetAllWalletsResponse>(
-        "https://digistar-demo-be.vercel.app/api/wallets"
-      );
-      setWallets(response.data.data);
-    } catch (err) {
+      let currentPage = 1;
+      const allWallets: Wallet[] = [];
+
+      while (true) {
+        const response = await axios.get<GetAllWalletsResponse>(
+          `https://digistar-demo-be.vercel.app/api/wallets?page=${currentPage}`
+        );
+
+        allWallets.push(...response.data.data);
+
+        if (response.data.page >= response.data.totalPages) {
+          break;
+        }
+
+        currentPage++;
+      }
+
+      setWallets(allWallets);
+      setWalletsError(null);
+    } catch (error) {
       setWalletsError(
-        err instanceof Error ? err.message : "Failed to load wallets"
+        error instanceof Error ? error.message : "Failed to load wallets"
       );
     } finally {
       setWalletsLoading(false);

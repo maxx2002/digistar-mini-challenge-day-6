@@ -19,10 +19,24 @@ const useGetAllCategories = () => {
   const fetchCategories = useCallback(async () => {
     setCategoriesLoading(true);
     try {
-      const response = await axios.get<GetAllCategoriesResponse>(
-        "https://digistar-demo-be.vercel.app/api/categories"
-      );
-      setCategories(response.data.data);
+      let currentPage = 1;
+      const allCategories: Category[] = [];
+
+      while (true) {
+        const response = await axios.get<GetAllCategoriesResponse>(
+          `https://digistar-demo-be.vercel.app/api/categories?page=${currentPage}`
+        );
+
+        allCategories.push(...response.data.data);
+
+        if (response.data.page >= response.data.totalPages) {
+          break;
+        }
+
+        currentPage++;
+      }
+
+      setCategories(allCategories);
       setCategoriesError(null);
     } catch (error) {
       setCategoriesError(

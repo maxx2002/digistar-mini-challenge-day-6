@@ -19,7 +19,7 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
       {expensesError && (
         <p className="text-darkred">Expense: {expensesError}</p>
       )}
-      {expenseList.length > 0
+      {!expensesLoading && expenseList.length > 0
         ? expenseList.map((expense) => (
             <ExpenseCard key={expense._id} expense={expense} />
           ))

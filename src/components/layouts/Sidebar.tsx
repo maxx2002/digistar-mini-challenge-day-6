@@ -57,7 +57,7 @@ const Sidebar = () => {
         <div className="flex flex-col gap-6 mt-6">
           {categoriesLoading && <SpinnerLoading />}
           {categoriesError && <p className="text-darkred">{categoriesError}</p>}
-          {categories?.length > 0
+          {!categoriesLoading && categories?.length > 0
             ? categories.map((category) => (
                 <WalletCategoryCard key={category._id} category={category} />
               ))
