@@ -27,7 +27,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
     expense?.flowType || "income"
   );
 
-  const { wallets, categories, refetchExpenses } = useDataContext();
+  const { wallets, categories } = useDataContext();
   const { createExpense, createExpenseLoading, createExpenseError } =
     usePostExpense();
   const { updateExpense, updateExpenseLoading, updateExpenseError } =
@@ -89,7 +89,6 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
       }
 
       if (!createExpenseError || !updateExpenseError) {
-        refetchExpenses();
         setCompleted(true);
       }
     } catch (error) {
