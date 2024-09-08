@@ -4,7 +4,6 @@ import Button from "../../ui/Button";
 import usePostWallet from "../../../hooks/wallet/usePostWallet";
 import usePutWallet from "../../../hooks/wallet/usePutWallet";
 import ActionSuccessAlert from "../alert/ActionSuccessAlert";
-import { useDataContext } from "../../../contexts/DataContext";
 import { Wallet } from "../../../interfaces/Wallet";
 
 interface WalletFormProps {
@@ -12,8 +11,6 @@ interface WalletFormProps {
 }
 
 const WalletForm: React.FC<WalletFormProps> = ({ wallet }: WalletFormProps) => {
-  const { refetchWallets } = useDataContext();
-
   const [walletName, setWalletName] = useState("");
 
   const { createWallet, createWalletLoading, createWalletError } =
@@ -48,7 +45,6 @@ const WalletForm: React.FC<WalletFormProps> = ({ wallet }: WalletFormProps) => {
       }
 
       if (!createWalletError || !updateWalletError) {
-        refetchWallets();
         setCompleted(true);
       }
     } catch (error) {
