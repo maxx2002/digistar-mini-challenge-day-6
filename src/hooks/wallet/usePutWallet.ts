@@ -9,12 +9,12 @@ const usePutWallet = () => {
     null
   );
 
-  const updateWallet = async (id: string, wallet: Partial<Wallet>) => {
+  const updateWallet = async (id: string, name: string) => {
     setUpdateWalletLoading(true);
     try {
       const response = await axios.put<{ message: string; wallet: Wallet }>(
         `https://digistar-demo-be.vercel.app/api/wallets/${id}`,
-        wallet
+        { name }
       );
       return response.data.wallet;
     } catch (err) {

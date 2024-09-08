@@ -15,12 +15,13 @@ const WalletForm: React.FC<WalletFormProps> = ({ wallet }: WalletFormProps) => {
   const { refetchWallets } = useDataContext();
 
   const [walletName, setWalletName] = useState("");
-  const [isCompleted, setCompleted] = useState(false);
 
   const { createWallet, createWalletLoading, createWalletError } =
     usePostWallet();
   const { updateWallet, updateWalletLoading, updateWalletError } =
     usePutWallet();
+
+  const [isCompleted, setCompleted] = useState(false);
 
   useEffect(() => {
     if (wallet) {
@@ -39,18 +40,19 @@ const WalletForm: React.FC<WalletFormProps> = ({ wallet }: WalletFormProps) => {
       return;
     }
 
-    if (wallet) {
-      await updateWallet(wallet._id, { name: walletName });
-      if (!updateWalletError) {
+    try {
+      if (wallet) {
+        await updateWallet(wallet._id, walletName);
+      } else {
+        await createWallet(walletName);
+      }
+
+      if (!createWalletError || !updateWalletError) {
         refetchWallets();
         setCompleted(true);
       }
-    } else {
-      await createWallet(walletName);
-      if (!createWalletError) {
-        refetchWallets();
-        setCompleted(true);
-      }
+    } catch (error) {
+      console.error(error);
     }
   };
 

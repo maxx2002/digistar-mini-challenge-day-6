@@ -1,31 +1,19 @@
 import { MdOutlinePayments } from "react-icons/md";
 import Button from "./Button";
 import Modal from "../modal/Modal";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { formatDate } from "../../utils/formatDate";
 import { Expense } from "../../interfaces/Expense";
+import { getRandomBgColor } from "../../utils/getRandomBgColor";
 
 type ExpenseCardProps = {
   expense: Expense;
 };
 
-const getRandomBgColor = () => {
-  const colors = [
-    "bg-blue",
-    "bg-purple",
-    "bg-orange",
-    "bg-green",
-    "bg-yellow",
-    "bg-red",
-  ];
-  const randomIndex = Math.floor(Math.random() * colors.length);
-  return colors[randomIndex];
-};
-
 const ExpenseCard: React.FC<ExpenseCardProps> = ({
   expense,
 }: ExpenseCardProps) => {
-  const bgColor = getRandomBgColor();
+  const bgColor = useMemo(() => getRandomBgColor(), []);
 
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);

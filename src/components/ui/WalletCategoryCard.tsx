@@ -5,20 +5,12 @@ import Button from "./Button";
 import Modal from "../modal/Modal";
 import { Wallet } from "../../interfaces/Wallet";
 import { Category } from "../../interfaces/Category";
+import { getRandomBgColor } from "../../utils/getRandomBgColor";
 
 interface WalletCategoryCardProps {
   wallet?: Wallet;
   category?: Category;
 }
-
-const bgColors = [
-  "bg-blue",
-  "bg-purple",
-  "bg-orange",
-  "bg-green",
-  "bg-yellow",
-  "bg-red",
-];
 
 const WalletCategoryCard: React.FC<WalletCategoryCardProps> = ({
   wallet,
@@ -27,10 +19,7 @@ const WalletCategoryCard: React.FC<WalletCategoryCardProps> = ({
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 
-  const randomBgColor = useMemo(() => {
-    const randomIndex = Math.floor(Math.random() * bgColors.length);
-    return bgColors[randomIndex];
-  }, []);
+  const bgColor = useMemo(() => getRandomBgColor(), []);
 
   const Icon = wallet ? FaWallet : BiSolidCategory;
 
@@ -56,7 +45,7 @@ const WalletCategoryCard: React.FC<WalletCategoryCardProps> = ({
     <div className="flex items-center justify-between">
       <div className="flex items-center space-x-4">
         <div
-          className={`w-10 h-10 ${randomBgColor} flex items-center justify-center rounded-lg`}
+          className={`w-10 h-10 ${bgColor} flex items-center justify-center rounded-lg`}
         >
           <Icon className="text-white" size={24} />
         </div>

@@ -51,7 +51,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
         await createCategory(categoryName, selectedWallet);
       }
 
-      if (!createCategoryError && !updateCategoryError) {
+      if (!createCategoryError || !updateCategoryError) {
         refetchCategories();
         setCompleted(true);
       }

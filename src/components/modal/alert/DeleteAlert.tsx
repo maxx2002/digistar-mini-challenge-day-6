@@ -39,32 +39,23 @@ const DeleteAlert: React.FC<DeleteAlertProps> = ({
     if (wallet) {
       await deleteWallet(wallet._id);
 
-      if (deleteWalletError) {
-        return;
-      } else {
-        refetchWallets();
+      if (!deleteWalletError) {
         setDeleteCompleted(true);
-        return;
+        refetchWallets();
       }
     } else if (category) {
       await deleteCategory(category._id);
 
-      if (deleteCategoryError) {
-        return;
-      } else {
-        refetchCategories();
+      if (!deleteCategoryError) {
         setDeleteCompleted(true);
-        return;
+        refetchCategories();
       }
     } else if (expense) {
       await deleteExpense(expense._id);
 
-      if (deleteExpenseError) {
-        return;
-      } else {
-        refetchExpenses();
+      if (!deleteExpenseError) {
         setDeleteCompleted(true);
-        return;
+        refetchExpenses();
       }
     }
   };
