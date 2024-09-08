@@ -81,7 +81,13 @@ const DeleteAlert: React.FC<DeleteAlertProps> = ({
 
   return (
     <div className="mx-auto">
-      <ModalCloseButton onClose={onCancel} refetch={refetch} />
+      <ModalCloseButton
+        onClose={onCancel}
+        refetch={refetch}
+        disabled={
+          deleteWalletLoading || deleteCategoryLoading || deleteExpenseLoading
+        }
+      />
       {isDeleteCompleted ? (
         <ActionSuccessAlert action="delete" type={type} />
       ) : (

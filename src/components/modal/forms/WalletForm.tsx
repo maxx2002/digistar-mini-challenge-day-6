@@ -65,6 +65,7 @@ const WalletForm: React.FC<WalletFormProps> = ({
       <ModalCloseButton
         onClose={onClose}
         refetch={isCompleted ? refetchWallets : undefined}
+        disabled={createWalletLoading || updateWalletLoading}
       />
       {isCompleted ? (
         <ActionSuccessAlert

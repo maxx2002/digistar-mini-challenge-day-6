@@ -114,6 +114,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
       <ModalCloseButton
         onClose={onClose}
         refetch={isCompleted ? refetchExpenses : undefined}
+        disabled={createExpenseLoading || updateExpenseLoading}
       />
       {isCompleted ? (
         <ActionSuccessAlert

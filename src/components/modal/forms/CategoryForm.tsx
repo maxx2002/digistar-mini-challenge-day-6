@@ -77,6 +77,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
       <ModalCloseButton
         onClose={onClose}
         refetch={isCompleted ? refetchCategories : undefined}
+        disabled={createCategoryLoading || updateCategoryLoading}
       />
       {isCompleted ? (
         <ActionSuccessAlert

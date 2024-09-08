@@ -37,7 +37,7 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="fixed inset-0 bg-black opacity-60"></div>
+      <div className="fixed inset-0 bg-black opacity-60" />
 
       <div className="relative p-8 bg-white rounded-lg shadow-lg w-156">
         {type === "category-form" && (
