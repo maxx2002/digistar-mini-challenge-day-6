@@ -1,11 +1,11 @@
-type InputProps = {
+interface InputProps {
   id: string;
   label: string;
   value: string;
   placeholder?: string;
   type?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
+}
 
 const Input: React.FC<InputProps> = ({
   id,
@@ -14,7 +14,7 @@ const Input: React.FC<InputProps> = ({
   placeholder,
   type = "text",
   onChange,
-}) => {
+}: InputProps) => {
   return (
     <div>
       <label htmlFor={id} className="block mb-2 font-medium text-gray-500">

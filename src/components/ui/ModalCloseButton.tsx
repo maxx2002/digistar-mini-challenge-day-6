@@ -1,14 +1,14 @@
 import React from "react";
 
-type ModalCloseButtonProps = {
+interface ModalCloseButtonProps {
   onClose: () => void;
   refetch?: () => void;
-};
+}
 
 const ModalCloseButton: React.FC<ModalCloseButtonProps> = ({
   onClose,
   refetch,
-}) => {
+}: ModalCloseButtonProps) => {
   const handleClick = () => {
     if (refetch) {
       refetch();

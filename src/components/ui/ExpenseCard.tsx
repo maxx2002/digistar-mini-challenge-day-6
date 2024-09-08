@@ -6,9 +6,9 @@ import { formatDate } from "../../utils/formatDate";
 import { Expense } from "../../interfaces/Expense";
 import { getRandomBgColor } from "../../utils/getRandomBgColor";
 
-type ExpenseCardProps = {
+interface ExpenseCardProps {
   expense: Expense;
-};
+}
 
 const ExpenseCard: React.FC<ExpenseCardProps> = ({
   expense,

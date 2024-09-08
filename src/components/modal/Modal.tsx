@@ -7,7 +7,7 @@ import ChangeWalletForm from "./forms/ChangeWalletForm";
 import ExpenseForm from "./forms/ExpenseForm";
 import WalletForm from "./forms/WalletForm";
 
-type ModalProps = {
+interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   type:
@@ -22,7 +22,7 @@ type ModalProps = {
   wallet?: Wallet;
   setCurrentWallet?: (wallet: Wallet) => void;
   expense?: Expense;
-};
+}
 
 const Modal: React.FC<ModalProps> = ({
   category,
@@ -32,7 +32,7 @@ const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   type,
-}) => {
+}: ModalProps) => {
   if (!isOpen) return null;
 
   return (
