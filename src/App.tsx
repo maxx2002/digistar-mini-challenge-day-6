@@ -5,8 +5,8 @@ import Overview from "./pages/overview/Overview";
 import Calendar from "./pages/calendar/Calendar";
 import Events from "./pages/events/Events";
 import { DataProvider } from "./contexts/DataContext";
-import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
+import Navbar from "./components/layouts/Navbar";
+import Sidebar from "./components/layouts/Sidebar";
 
 function App() {
   return (

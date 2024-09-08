@@ -20,12 +20,11 @@ const useGetAllExpenses = () => {
     setExpensesLoading(true);
     try {
       let currentPage = 1;
-      const limit = 10;
       const allExpenses: Expense[] = [];
 
       while (true) {
         const response = await axios.get<UseGetAllExpenseResponse>(
-          `https://digistar-demo-be.vercel.app/api/expense-items?page=${currentPage}&limit=${limit}`
+          `https://digistar-demo-be.vercel.app/api/expense-items?page=${currentPage}`
         );
 
         allExpenses.push(...response.data.data);

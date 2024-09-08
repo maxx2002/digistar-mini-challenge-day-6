@@ -1,14 +1,12 @@
-import { FaWallet } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useDataContext } from "../../contexts/DataContext";
 import { Expense } from "../../interfaces/Expense";
 import { Wallet } from "../../interfaces/Wallet";
-import Button from "../../components/ui/Button";
-import SearchField from "../../components/ui/SearchField";
-import { formatDate } from "../../utils/formatDate";
-import SpinnerLoading from "../../components/ui/SpinnerLoading";
-import ExpenseCard from "../../components/ui/ExpenseCard";
 import Modal from "../../components/modal/Modal";
+import Header from "./blocks/Header";
+import Filters from "./blocks/Filters";
+import TransactionSummary from "./blocks/TransactionSummary";
+import ExpenseList from "./blocks/ExpenseList";
 
 const Finance = () => {
   const { expenses, expensesLoading, expensesError, wallets } =
@@ -18,9 +16,13 @@ const Finance = () => {
   const [currentWallet, setCurrentWallet] = useState<Wallet | null>(null);
   const [transactions, setTransactions] = useState(0);
   const [value, setValue] = useState(0);
+
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [filterCategory, setFilterCategory] = useState<string | null>(null);
+  const [filterDate, setFilterDate] = useState<string | null>(null);
+  const [filterFlowType, setFilterFlowType] = useState<string | null>(null);
 
   useEffect(() => {
     if (expenses && wallets.length > 0) {
@@ -30,11 +32,40 @@ const Finance = () => {
       }
 
       if (currentWallet) {
-        const filteredExpenses = expenses.filter(
+        let filteredExpenses = expenses.filter(
           (expense) => expense.wallet?._id === currentWallet?._id
         );
-        setExpenseList(filteredExpenses);
 
+        if (searchTerm) {
+          const lowerSearchTerm = searchTerm.toLowerCase();
+          filteredExpenses = filteredExpenses.filter((expense) =>
+            expense.title.toLowerCase().includes(lowerSearchTerm)
+          );
+        }
+
+        if (filterCategory) {
+          filteredExpenses = filteredExpenses.filter(
+            (expense) => expense.category?.name === filterCategory
+          );
+        }
+
+        // Apply date filter
+        if (filterDate) {
+          filteredExpenses = filteredExpenses.filter((expense) => {
+            const expenseDate = new Date(expense.createdAt)
+              .toISOString()
+              .split("T")[0];
+            return expenseDate === filterDate;
+          });
+        }
+
+        if (filterFlowType) {
+          filteredExpenses = filteredExpenses.filter(
+            (expense) => expense.flowType === filterFlowType
+          );
+        }
+
+        setExpenseList(filteredExpenses);
         setTransactions(filteredExpenses.length);
 
         const totalAmount = filteredExpenses.reduce((acc, expense) => {
@@ -49,60 +80,46 @@ const Finance = () => {
         setValue(totalAmount);
       }
     }
-  }, [expenses, wallets, currentWallet, isInitialLoad]);
+  }, [
+    expenses,
+    wallets,
+    currentWallet,
+    isInitialLoad,
+    searchTerm,
+    filterCategory,
+    filterDate,
+    filterFlowType,
+  ]);
 
   const [isAddModalOpen, setAddModalOpen] = useState(false);
   const [isChangeWalletModalOpen, setChangeWalletModalOpen] = useState(false);
 
   return (
     <div className="px-10 py-4">
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-4">
-          <FaWallet className="text-orange" size={44} />
-          <div className="flex flex-col">
-            <h2 className="text-2xl font-semibold text-blue">
-              {currentWallet?.name} Wallet
-            </h2>
-            <p
-              className="text-sm font-medium cursor-pointer text-darkgray"
-              onClick={() => setChangeWalletModalOpen(true)}
-            >
-              Change current wallet
-            </p>
-          </div>
-        </div>
-        <Button
-          label="Add Transaction"
-          variant="add"
-          onClick={() => setAddModalOpen(true)}
-        />
-      </div>
-      <div className="flex items-center justify-between w-full mb-8 gap-x-4">
-        <SearchField searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-        <div className="flex items-center justify-end gap-x-4 min-w-96">
-          <Button label="Category" variant="filter" />
-          <Button label="Date" variant="filter-active" />
-          <Button label="Flow Type" variant="filter" />
-        </div>
-      </div>
-      <div className="flex items-center justify-between mb-6">
-        <h6 className="text-lg font-semibold">{formatDate(Date())}</h6>
-        <div className="flex items-center gap-10 text-darkgray">
-          <p>Number of transactions: {transactions}</p>
-          <p>Value: {value < 0 ? `-$${Math.abs(value)}` : `$${value}`}</p>
-        </div>
-      </div>
-      <div className="flex flex-col gap-4 mb-6">
-        {expensesLoading && <SpinnerLoading />}
-        {expensesError && (
-          <p className="text-darkred">Expense: {expensesError}</p>
-        )}
-        {expenseList.length > 0
-          ? expenseList.map((expense) => (
-              <ExpenseCard key={expense._id} expense={expense} />
-            ))
-          : !expensesLoading && !expensesError && <p>No expenses found</p>}
-      </div>
+      <Header
+        currentWallet={currentWallet}
+        setChangeWalletModalOpen={setChangeWalletModalOpen}
+        setAddModalOpen={setAddModalOpen}
+      />
+
+      <Filters
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        filterCategory={filterCategory}
+        setFilterCategory={setFilterCategory}
+        filterDate={filterDate}
+        setFilterDate={setFilterDate}
+        filterFlowType={filterFlowType}
+        setFilterFlowType={setFilterFlowType}
+      />
+
+      <TransactionSummary transactions={transactions} value={value} />
+
+      <ExpenseList
+        expensesLoading={expensesLoading}
+        expensesError={expensesError}
+        expenseList={expenseList}
+      />
 
       <Modal
         type="expense-form"

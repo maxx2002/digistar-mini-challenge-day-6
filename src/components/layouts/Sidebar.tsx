@@ -1,10 +1,10 @@
 import { IoIosNotificationsOutline } from "react-icons/io";
-import Button from "./ui/Button";
-import WalletCategoryCard from "./ui/WalletCategoryCard";
+import Button from "../ui/Button";
+import WalletCategoryCard from "../ui/WalletCategoryCard";
 import { useState } from "react";
-import Modal from "./modal/Modal";
-import SpinnerLoading from "./ui/SpinnerLoading";
-import { useDataContext } from "../contexts/DataContext";
+import Modal from "../modal/Modal";
+import SpinnerLoading from "../ui/SpinnerLoading";
+import { useDataContext } from "../../contexts/DataContext";
 
 const Sidebar = () => {
   const {
