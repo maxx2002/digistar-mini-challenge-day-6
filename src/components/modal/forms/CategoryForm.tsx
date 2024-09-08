@@ -18,7 +18,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
   const [categoryName, setCategoryName] = useState(category?.name || "");
   const [selectedWallet, setSelectedWallet] = useState<string>("");
 
-  const { wallets } = useDataContext();
+  const { wallets, refetchCategories } = useDataContext();
   const { createCategory, createCategoryLoading, createCategoryError } =
     usePostCategory();
   const { updateCategory, updateCategoryLoading, updateCategoryError } =
@@ -49,13 +49,19 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
         await updateCategory(category._id, categoryName, selectedWallet);
 
         if (!updateCategoryError) {
+          refetchCategories();
           setCompleted(true);
+        } else {
+          setCompleted(false);
         }
       } else {
         await createCategory(categoryName, selectedWallet);
 
         if (!createCategoryError) {
+          refetchCategories();
           setCompleted(true);
+        } else {
+          setCompleted(false);
         }
       }
     } catch (error) {

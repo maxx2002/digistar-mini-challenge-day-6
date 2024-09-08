@@ -14,23 +14,10 @@ const Sidebar = () => {
     categories,
     categoriesLoading,
     categoriesError,
-    refetchCategories,
-    refetchWallets,
   } = useDataContext();
 
   const [isAddWalletModalOpen, setAddWalletModalOpen] = useState(false);
   const [isAddCategoryModalOpen, setAddCategoryModalOpen] = useState(false);
-
-  const handleClose = () => {
-    if (isAddCategoryModalOpen) {
-      refetchWallets();
-    } else if (isAddWalletModalOpen) {
-      refetchCategories();
-    }
-
-    setAddWalletModalOpen(false);
-    setAddCategoryModalOpen(false);
-  };
 
   return (
     <div className="p-6 mb-2">
@@ -82,12 +69,12 @@ const Sidebar = () => {
       <Modal
         type="wallet-form"
         isOpen={isAddWalletModalOpen}
-        onClose={handleClose}
+        onClose={() => setAddWalletModalOpen(false)}
       />
       <Modal
         type="category-form"
         isOpen={isAddCategoryModalOpen}
-        onClose={handleClose}
+        onClose={() => setAddCategoryModalOpen(false)}
       />
     </div>
   );

@@ -9,7 +9,7 @@ import TransactionSummary from "./blocks/TransactionSummary";
 import ExpenseList from "./blocks/ExpenseList";
 
 const Finance = () => {
-  const { expenses, expensesLoading, expensesError, wallets, refetchExpenses } =
+  const { expenses, expensesLoading, expensesError, wallets } =
     useDataContext();
 
   const [expenseList, setExpenseList] = useState<Expense[]>([]);
@@ -49,6 +49,7 @@ const Finance = () => {
           );
         }
 
+        // Apply date filter
         if (filterDate) {
           filteredExpenses = filteredExpenses.filter((expense) => {
             const expenseDate = new Date(expense.createdAt)
@@ -93,12 +94,6 @@ const Finance = () => {
   const [isAddModalOpen, setAddModalOpen] = useState(false);
   const [isChangeWalletModalOpen, setChangeWalletModalOpen] = useState(false);
 
-  const handleClose = () => {
-    setAddModalOpen(false);
-
-    refetchExpenses();
-  };
-
   return (
     <div className="px-10 py-4">
       <Header
@@ -129,7 +124,7 @@ const Finance = () => {
       <Modal
         type="expense-form"
         isOpen={isAddModalOpen}
-        onClose={handleClose}
+        onClose={() => setAddModalOpen(false)}
       />
       <Modal
         type="change-wallet-form"

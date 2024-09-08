@@ -6,6 +6,7 @@ import { Wallet } from "../../../interfaces/Wallet";
 import { Category } from "../../../interfaces/Category";
 import { Expense } from "../../../interfaces/Expense";
 import ActionSuccessAlert from "./ActionSuccessAlert";
+import { useDataContext } from "../../../contexts/DataContext";
 import useDeleteCategory from "../../../hooks/category/useDeleteCategory";
 import useDeleteExpense from "../../../hooks/expense/useDeleteExpense";
 
@@ -22,6 +23,9 @@ const DeleteAlert: React.FC<DeleteAlertProps> = ({
   expense,
   onCancel,
 }) => {
+  const { refetchWallets, refetchCategories, refetchExpenses } =
+    useDataContext();
+
   const { deleteWallet, deleteWalletLoading, deleteWalletError } =
     useDeleteWallet();
   const { deleteCategory, deleteCategoryLoading, deleteCategoryError } =
@@ -37,16 +41,19 @@ const DeleteAlert: React.FC<DeleteAlertProps> = ({
         await deleteWallet(wallet._id);
         if (!deleteWalletError) {
           setDeleteCompleted(true);
+          refetchWallets();
         }
       } else if (category) {
         await deleteCategory(category._id);
         if (!deleteCategoryError) {
           setDeleteCompleted(true);
+          refetchCategories();
         }
       } else if (expense) {
         await deleteExpense(expense._id);
         if (!deleteExpenseError) {
           setDeleteCompleted(true);
+          refetchExpenses();
         }
       }
     } catch (error) {

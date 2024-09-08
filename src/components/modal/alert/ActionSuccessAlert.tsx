@@ -1,3 +1,4 @@
+import React from "react";
 import { MdCheckCircle } from "react-icons/md";
 
 type ActionSuccessAlertProps = {
