@@ -37,21 +37,18 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div
-        className="fixed inset-0 bg-black opacity-60"
-        onClick={onClose}
-      ></div>
+      <div className="fixed inset-0 bg-black opacity-60"></div>
 
       <div className="relative p-8 bg-white rounded-lg shadow-lg w-156">
-        <button
-          className="absolute text-4xl font-bold text-blue top-2 right-4"
-          onClick={onClose}
-        >
-          &times;
-        </button>
-        {type === "category-form" && <CategoryForm category={category} />}
-        {type === "wallet-form" && <WalletForm wallet={wallet} />}
-        {type === "expense-form" && <ExpenseForm expense={expense} />}
+        {type === "category-form" && (
+          <CategoryForm category={category} onClose={onClose} />
+        )}
+        {type === "wallet-form" && (
+          <WalletForm wallet={wallet} onClose={onClose} />
+        )}
+        {type === "expense-form" && (
+          <ExpenseForm expense={expense} onClose={onClose} />
+        )}
         {type === "change-wallet-form" && (
           <ChangeWalletForm
             currentWallet={wallet}

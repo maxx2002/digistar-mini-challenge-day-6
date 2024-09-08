@@ -7,13 +7,16 @@ import usePostExpense from "../../../hooks/expense/usePostExpense";
 import usePutExpense from "../../../hooks/expense/usePutExpense";
 import ActionSuccessAlert from "../alert/ActionSuccessAlert";
 import { Expense } from "../../../interfaces/Expense";
+import ModalCloseButton from "../../ui/ModalCloseButton";
 
 interface ExpenseFormProps {
   expense?: Expense;
+  onClose: () => void;
 }
 
 const ExpenseForm: React.FC<ExpenseFormProps> = ({
   expense,
+  onClose,
 }: ExpenseFormProps) => {
   const [title, setTitle] = useState(expense?.title || "");
   const [amount, setAmount] = useState<string>(
@@ -27,7 +30,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
     expense?.flowType || "income"
   );
 
-  const { wallets, categories } = useDataContext();
+  const { wallets, categories, refetchExpenses } = useDataContext();
   const { createExpense, createExpenseLoading, createExpenseError } =
     usePostExpense();
   const { updateExpense, updateExpenseLoading, updateExpenseError } =
@@ -108,6 +111,10 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
 
   return (
     <div className="mx-auto">
+      <ModalCloseButton
+        onClose={onClose}
+        refetch={isCompleted ? refetchExpenses : undefined}
+      />
       {isCompleted ? (
         <ActionSuccessAlert
           action={expense ? "update" : "create"}

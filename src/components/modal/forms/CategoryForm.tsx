@@ -7,18 +7,21 @@ import usePostCategory from "../../../hooks/category/usePostCategory";
 import ActionSuccessAlert from "../alert/ActionSuccessAlert";
 import { Category } from "../../../interfaces/Category";
 import usePutCategory from "../../../hooks/category/usePutCategory";
+import ModalCloseButton from "../../ui/ModalCloseButton";
 
 interface CategoryFormProps {
   category?: Category;
+  onClose: () => void;
 }
 
 const CategoryForm: React.FC<CategoryFormProps> = ({
   category,
+  onClose,
 }: CategoryFormProps) => {
   const [categoryName, setCategoryName] = useState(category?.name || "");
   const [selectedWallet, setSelectedWallet] = useState<string>("");
 
-  const { wallets } = useDataContext();
+  const { wallets, refetchCategories } = useDataContext();
   const { createCategory, createCategoryLoading, createCategoryError } =
     usePostCategory();
   const { updateCategory, updateCategoryLoading, updateCategoryError } =
@@ -71,6 +74,10 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
 
   return (
     <div className="mx-auto">
+      <ModalCloseButton
+        onClose={onClose}
+        refetch={isCompleted ? refetchCategories : undefined}
+      />
       {isCompleted ? (
         <ActionSuccessAlert
           action={category ? "update" : "create"}

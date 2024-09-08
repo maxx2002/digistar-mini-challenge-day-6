@@ -5,7 +5,6 @@ import { useMemo, useState } from "react";
 import { formatDate } from "../../utils/formatDate";
 import { Expense } from "../../interfaces/Expense";
 import { getRandomBgColor } from "../../utils/getRandomBgColor";
-import { useDataContext } from "../../contexts/DataContext";
 
 type ExpenseCardProps = {
   expense: Expense;
@@ -14,8 +13,6 @@ type ExpenseCardProps = {
 const ExpenseCard: React.FC<ExpenseCardProps> = ({
   expense,
 }: ExpenseCardProps) => {
-  const { refetchExpenses } = useDataContext();
-
   const bgColor = useMemo(() => getRandomBgColor(), []);
 
   const [isEditModalOpen, setEditModalOpen] = useState(false);
@@ -24,8 +21,6 @@ const ExpenseCard: React.FC<ExpenseCardProps> = ({
   const handleClose = () => {
     setEditModalOpen(false);
     setDeleteModalOpen(false);
-
-    refetchExpenses();
   };
 
   return (

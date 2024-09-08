@@ -8,20 +8,25 @@ import { Expense } from "../../../interfaces/Expense";
 import ActionSuccessAlert from "./ActionSuccessAlert";
 import useDeleteCategory from "../../../hooks/category/useDeleteCategory";
 import useDeleteExpense from "../../../hooks/expense/useDeleteExpense";
+import ModalCloseButton from "../../ui/ModalCloseButton";
+import { useDataContext } from "../../../contexts/DataContext";
 
-type DeleteAlertProps = {
+interface DeleteAlertProps {
   wallet?: Wallet;
   category?: Category;
   expense?: Expense;
   onCancel: () => void;
-};
+}
 
 const DeleteAlert: React.FC<DeleteAlertProps> = ({
   wallet,
   category,
   expense,
   onCancel,
-}) => {
+}: DeleteAlertProps) => {
+  const { refetchCategories, refetchWallets, refetchExpenses } =
+    useDataContext();
+
   const { deleteWallet, deleteWalletLoading, deleteWalletError } =
     useDeleteWallet();
   const { deleteCategory, deleteCategoryLoading, deleteCategoryError } =
@@ -64,8 +69,19 @@ const DeleteAlert: React.FC<DeleteAlertProps> = ({
     : "";
   const type = wallet ? "wallet" : category ? "category" : "expense";
 
+  const refetch = isDeleteCompleted
+    ? wallet
+      ? refetchWallets
+      : category
+      ? refetchCategories
+      : expense
+      ? refetchExpenses
+      : undefined
+    : undefined;
+
   return (
     <div className="mx-auto">
+      <ModalCloseButton onClose={onCancel} refetch={refetch} />
       {isDeleteCompleted ? (
         <ActionSuccessAlert action="delete" type={type} />
       ) : (

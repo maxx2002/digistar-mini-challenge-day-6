@@ -6,7 +6,6 @@ import Modal from "../modal/Modal";
 import { Wallet } from "../../interfaces/Wallet";
 import { Category } from "../../interfaces/Category";
 import { getRandomBgColor } from "../../utils/getRandomBgColor";
-import { useDataContext } from "../../contexts/DataContext";
 
 interface WalletCategoryCardProps {
   wallet?: Wallet;
@@ -17,8 +16,6 @@ const WalletCategoryCard: React.FC<WalletCategoryCardProps> = ({
   wallet,
   category,
 }) => {
-  const { refetchWallets, refetchCategories } = useDataContext();
-
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 
@@ -47,12 +44,6 @@ const WalletCategoryCard: React.FC<WalletCategoryCardProps> = ({
   const handleClose = () => {
     setEditModalOpen(false);
     setDeleteModalOpen(false);
-
-    if (wallet) {
-      refetchWallets();
-    } else if (category) {
-      refetchCategories();
-    }
   };
 
   return (

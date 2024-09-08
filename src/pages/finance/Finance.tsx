@@ -9,7 +9,7 @@ import TransactionSummary from "./blocks/TransactionSummary";
 import ExpenseList from "./blocks/ExpenseList";
 
 const Finance = () => {
-  const { expenses, expensesLoading, expensesError, wallets, refetchExpenses } =
+  const { expenses, expensesLoading, expensesError, wallets } =
     useDataContext();
 
   const [expenseList, setExpenseList] = useState<Expense[]>([]);
@@ -95,8 +95,6 @@ const Finance = () => {
 
   const handleClose = () => {
     setAddModalOpen(false);
-
-    refetchExpenses();
   };
 
   return (

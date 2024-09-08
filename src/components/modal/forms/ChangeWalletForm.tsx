@@ -3,6 +3,7 @@ import Select from "../../ui/Select";
 import Button from "../../ui/Button";
 import { Wallet } from "../../../interfaces/Wallet";
 import { useDataContext } from "../../../contexts/DataContext";
+import ModalCloseButton from "../../ui/ModalCloseButton";
 
 interface ChangeWalletFormProps {
   currentWallet?: Wallet;
@@ -47,7 +48,8 @@ const ChangeWalletForm: React.FC<ChangeWalletFormProps> = ({
   }));
 
   return (
-    <div className="mx-auto rounded-lg">
+    <div className="mx-auto">
+      <ModalCloseButton onClose={onClose} />
       <h1 className="mb-6 text-2xl font-bold">Change Current Wallet</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-8">
         <Select

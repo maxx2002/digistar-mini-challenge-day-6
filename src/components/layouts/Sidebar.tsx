@@ -14,20 +14,12 @@ const Sidebar = () => {
     categories,
     categoriesLoading,
     categoriesError,
-    refetchCategories,
-    refetchWallets,
   } = useDataContext();
 
   const [isAddWalletModalOpen, setAddWalletModalOpen] = useState(false);
   const [isAddCategoryModalOpen, setAddCategoryModalOpen] = useState(false);
 
   const handleClose = () => {
-    if (isAddCategoryModalOpen) {
-      refetchWallets();
-    } else if (isAddWalletModalOpen) {
-      refetchCategories();
-    }
-
     setAddWalletModalOpen(false);
     setAddCategoryModalOpen(false);
   };

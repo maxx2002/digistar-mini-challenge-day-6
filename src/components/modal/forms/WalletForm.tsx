@@ -5,12 +5,20 @@ import usePostWallet from "../../../hooks/wallet/usePostWallet";
 import usePutWallet from "../../../hooks/wallet/usePutWallet";
 import ActionSuccessAlert from "../alert/ActionSuccessAlert";
 import { Wallet } from "../../../interfaces/Wallet";
+import ModalCloseButton from "../../ui/ModalCloseButton";
+import { useDataContext } from "../../../contexts/DataContext";
 
 interface WalletFormProps {
   wallet?: Wallet;
+  onClose: () => void;
 }
 
-const WalletForm: React.FC<WalletFormProps> = ({ wallet }: WalletFormProps) => {
+const WalletForm: React.FC<WalletFormProps> = ({
+  wallet,
+  onClose,
+}: WalletFormProps) => {
+  const { refetchWallets } = useDataContext();
+
   const [walletName, setWalletName] = useState("");
 
   const { createWallet, createWalletLoading, createWalletError } =
@@ -54,6 +62,10 @@ const WalletForm: React.FC<WalletFormProps> = ({ wallet }: WalletFormProps) => {
 
   return (
     <div className="mx-auto">
+      <ModalCloseButton
+        onClose={onClose}
+        refetch={isCompleted ? refetchWallets : undefined}
+      />
       {isCompleted ? (
         <ActionSuccessAlert
           action={wallet ? "update" : "create"}
