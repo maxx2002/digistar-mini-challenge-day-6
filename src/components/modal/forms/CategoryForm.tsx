@@ -47,16 +47,26 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
     try {
       if (category) {
         await updateCategory(category._id, categoryName, selectedWallet);
+
+        if (!updateCategoryError) {
+          refetchCategories();
+          setCompleted(true);
+        } else {
+          setCompleted(false);
+        }
       } else {
         await createCategory(categoryName, selectedWallet);
-      }
 
-      if (!createCategoryError || !updateCategoryError) {
-        refetchCategories();
-        setCompleted(true);
+        if (!createCategoryError) {
+          refetchCategories();
+          setCompleted(true);
+        } else {
+          setCompleted(false);
+        }
       }
     } catch (error) {
       console.error(error);
+      setCompleted(false);
     }
   };
 

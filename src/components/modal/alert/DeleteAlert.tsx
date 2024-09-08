@@ -36,27 +36,29 @@ const DeleteAlert: React.FC<DeleteAlertProps> = ({
   const [isDeleteCompleted, setDeleteCompleted] = useState(false);
 
   const handleDelete = async () => {
-    if (wallet) {
-      await deleteWallet(wallet._id);
-
-      if (!deleteWalletError) {
-        setDeleteCompleted(true);
-        refetchWallets();
+    try {
+      if (wallet) {
+        await deleteWallet(wallet._id);
+        if (!deleteWalletError) {
+          setDeleteCompleted(true);
+          refetchWallets();
+        }
+      } else if (category) {
+        await deleteCategory(category._id);
+        if (!deleteCategoryError) {
+          setDeleteCompleted(true);
+          refetchCategories();
+        }
+      } else if (expense) {
+        await deleteExpense(expense._id);
+        if (!deleteExpenseError) {
+          setDeleteCompleted(true);
+          refetchExpenses();
+        }
       }
-    } else if (category) {
-      await deleteCategory(category._id);
-
-      if (!deleteCategoryError) {
-        setDeleteCompleted(true);
-        refetchCategories();
-      }
-    } else if (expense) {
-      await deleteExpense(expense._id);
-
-      if (!deleteExpenseError) {
-        setDeleteCompleted(true);
-        refetchExpenses();
-      }
+    } catch (error) {
+      console.error("Error during deletion:", error);
+      setDeleteCompleted(false);
     }
   };
 

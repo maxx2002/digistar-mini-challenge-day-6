@@ -12,7 +12,7 @@ function App() {
   return (
     <DataProvider>
       <Router>
-        <main className="grid min-h-screen grid-cols-4">
+        <main className="grid min-h-screen grid-cols-4 overflow-x-hidden max-w-screen">
           <section className="col-span-3 bg-gray">
             <Navbar />
             <Routes>
